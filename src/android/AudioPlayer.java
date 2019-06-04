@@ -725,14 +725,11 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
             // Check for API 23+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 try {
-                    boolean wasPlaying = this.player.isPlaying();
                     this.player.setPlaybackParams(this.player.getPlaybackParams().setSpeed(speed));
-                    if (!wasPlaying && this.player.isPlaying()) {
-                        this.player.pause();
-                    }
                 }
                 catch(Exception e) {
-                    e.printStackTrace();
+                    LOG.d(LOG_TAG, "AudioPlayer Error: Cannot set rate until the audio file is initialized.", e);
+                    sendErrorStatus(MEDIA_ERR_NONE_ACTIVE);
                 }
             }
         }
